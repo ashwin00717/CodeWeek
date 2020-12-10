@@ -1,0 +1,17 @@
+﻿LOGIC_KEY,LOGIC_NAME,GRP_FLG,ORD_FLG,WHR_FLG
+highest,max,1,1,0
+lowest,min,1,1,0
+most,desc,1,1,0
+per,group,1,0,0
+each,group,1,0,0
+number,count,1,0,0
+least,asc,1,1,0
+in,in,0,0,1
+greater,>,0,0,1
+lower,<,0,0,1
+equal,=,0,0,1
+less,<,0,0,1
+more,>,0,0,1
+between,between,0,0,1
+most number,count,1,1,0
+many,count,1,0,0

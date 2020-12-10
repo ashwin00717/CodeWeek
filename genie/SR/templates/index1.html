@@ -1,0 +1,15 @@
+<!-- howdy/templates/index.html -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>CodeWeek</title>
+    </head>
+    <body>
+        <h1>CodeWeek</h1>
+    </body>
+</html>
+
+<form action="/question/" method="POST"> {% csrf_token %}
+    <input type="submit" value="Click here to record your question!">
+</form>
