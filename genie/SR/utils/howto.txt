@@ -1,0 +1,54 @@
+- Go to genie folder
+- Run python manage.py shell
+- Run below command one by one. Make sure to change the file to your local file path
+
+from SR.models import employee
+with open('C:\\Ashwin\\SparkCode\\test_db\\load_employees.dump','r') as fp:
+    count = 0
+    for line in fp:
+        if count < 1000:
+			line=line.split(",")
+            l=employee(emp_no=line[0],birth_date=line[1],first_name=line[2],last_name=line[3],gender=line[4],hire_date=line[5])
+			l.save()
+            count +=1
+
+
+from SR.models import departments
+with open('C:\\Ashwin\\SparkCode\\test_db\\load_departments.dump','r') as fp:
+    count = 0
+    for line in fp:
+        if count < 1000:
+			line=line.split(",")
+            l=departments(dept_no=line[0],dept_name=line[1])
+			l.save()
+            count +=1
+
+from SR.models import dept_manager
+with open('C:\\Ashwin\\SparkCode\\test_db\\load_dept_manager.dump','r') as fp:
+    count = 0
+    for line in fp:
+        if count < 1000:
+			line=line.split(",")
+            l=dept_manager(emp_no=line[0],dept_no=line[1],from_date=line[2],to_date=line[3])
+			l.save()
+            count +=1
+
+from SR.models import titles
+with open('C:\\Ashwin\\SparkCode\\test_db\\load_titles.dump','r') as fp:
+    count = 0
+    for line in fp:
+        if count < 1000:
+			line=line.split(",")
+            l=titles(emp_no=line[0],title=line[1],from_date=line[2],to_date=line[3])
+			l.save()
+            count +=1
+
+from SR.models import salaries
+with open('C:\\Ashwin\\SparkCode\\test_db\\load_salaries1.dump','r') as fp:
+    count = 0
+    for line in fp:
+        if count < 2000:
+			line=line.split(",")
+            l=salaries(emp_no=line[0],salary=line[1],from_date=line[2],to_date=line[3])
+			l.save()
+            count +=1

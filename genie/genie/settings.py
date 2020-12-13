@@ -120,3 +120,4 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 # CSRF_COOKIE_SECURE = True
+DATE_INPUT_FORMATS = ['%d-%m-%Y']
