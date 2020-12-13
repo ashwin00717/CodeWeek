@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
+from django.http import HttpResponse
 import speech_recognition as sr
 import pyttsx3
 import sounddevice as sd
@@ -13,6 +14,11 @@ from SR.models import *
 from django.db import connection
 # from termcolor import colored
 # from sty import fg, bg, ef, rs
+import plotly.express as px
+from jupyter_dash import JupyterDash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
 
 # Create your views here.
 class HomePageView(TemplateView):
@@ -77,6 +83,7 @@ def speech2text():
 
 
 def usesounddevice(request):
+
     print ("### Recording voice ###")
     fs = 44100  # Sample rate
     seconds = 10  # Duration of recording
@@ -93,8 +100,15 @@ def usesounddevice(request):
     cur.execute(sql)
     rows = cur.fetchall()
     print("Database Result:",rows)
-    return HttpResponseRedirect("/")
+    #dash()
+    #link = "http://127.0.0.1:8050/"
+    #return HttpResponse(link)
+    dash_report()
+    return render(request, "index.html", context=None)
+    #return HttpResponseRedirect(rows)
 
+def loaddash(request):
+    return HttpResponse("New API working")
 
 def text2sql():
     ##########
@@ -222,5 +236,42 @@ def text2sql():
     print("Final SQL:", final_sql)
     return final_sql
     # A0003: End
+
+    ##############
+def dash_report():
+    import pandas as pd
+    import plotly
+    import dash
+    import dash_table
+    import plotly.express as px
+    import dash_core_components as dcc
+    import dash_html_components as html
+    import ssl
+    ssl._create_default_https_context = ssl._create_unverified_context
+
+    app = dash.Dash(__name__)
+
+    df4 = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
+
+    c = df4.columns
+
+    fig1 = px.bar(df4, x=df4.iloc[:, 1], y=df4.iloc[:, 2], hover_data=df4.columns, color=c[3],
+                  labels={'x': c[1], 'y': c[2]})
+
+    fig2 = px.scatter(df4, x=df4.iloc[:, 1], y=df4.iloc[:, 2], height=700, hover_data=df4.columns, color=c[3],
+                      size=df4.iloc[:, 4], size_max=65, log_x=True, labels={'x': c[1], 'y': c[2]})
+
+    fig3 = px.line(df4, x=df4.iloc[:, 1], y=df4.iloc[:, 2], color=c[3], line_group=c[0], hover_name=c[0])
+
+    fig4 = px.density_heatmap(df4, x=df4.iloc[:, 1], y=df4.iloc[:, 4], nbinsx=20, nbinsy=20,
+                              labels={'x': c[1], 'y': c[4]}, hover_data=df4.columns)
+
+    fig5 = px.density_heatmap(df4, x=df4.iloc[:, 1], y=df4.iloc[:, 4], nbinsx=10, nbinsy=10, facet_row=df4.iloc[:, 3],
+                              labels={'x': c[1], 'y': c[4]}, hover_data=df4.columns)
+
+    fig6 = px.treemap(df4, path=[df4.iloc[:, 1], df4.iloc[:, 3]], values=df4.iloc[:, 2], color=df4.iloc[:, 1],
+                      color_continuous_scale=['red', 'yellow'])
+
+    plotly.offline.plot(fig6, filename='C:\\Ashwin\\SparkCode\\projects\\CodeWeek\\genie\\SR\\templates\\fig6.html')
 
     ##############
